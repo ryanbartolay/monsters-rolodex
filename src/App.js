@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      string: "Hello World"
+    }
+  }
+  render() {
+    return <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -16,11 +23,13 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn React {this.state.string}
+          
         </a>
+        <button onClick={()=>this.setState({string:"hello ryan"})}>Click here</button>
       </header>
     </div>
-  );
+  }
 }
 
 export default App;
