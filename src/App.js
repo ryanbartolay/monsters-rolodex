@@ -4,11 +4,12 @@ import { CardList } from "./components/card-list/card-list.component";
 import { SearchBox } from "./components/search-box/search-box.component";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       monsters: [],
-      searchField: ""
+      searchField: "",
+      meaningOfLife: 47 + this.props.increment
     };
   }
   componentWillMount() {
@@ -16,22 +17,31 @@ class App extends Component {
       .then(response => response.json())
       .then(users => this.setState({ monsters: users }));
   }
-  handleSearch = (e) => {
-    this.setState({ searchField: e.target.value })
-  }
+  handleClick = () => {
+    this.setState(
+      (prevState, prevProps) => {
+        return { meaningOfLife: prevState.meaningOfLife + prevProps.increment };
+      },
+      () => {
+        console.log(this.state.meaningOfLife);
+      }
+    );
+  };
+  handleSearch = e => {
+    this.setState({ searchField: e.target.value });
+  };
   render() {
-    const { monsters, searchField } = this.state;
+    const { monsters, searchField, meaningOfLife } = this.state;
     const filteredMonsters = monsters.filter(monster =>
       monster.name.toLowerCase().includes(searchField.toLowerCase())
     );
     return (
       <div className="App">
-      <h1>Monsters Rolodex</h1>
+        <h1>Monsters Rolodex</h1>
         You searched for {this.state.searchField}
-        <SearchBox
-          placeholder="Search HERE"
-          handleSearch={this.handleSearch}
-        />
+        {meaningOfLife}
+        <button onClick={this.handleClick}>Increment</button>
+        <SearchBox placeholder="Search HERE" handleSearch={this.handleSearch} />
         <CardList monsters={filteredMonsters} />
       </div>
     );
